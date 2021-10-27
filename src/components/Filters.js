@@ -79,7 +79,6 @@ export default function Filters({ data, handleFilter, setFilterActive }) {
                 if (e.target.name === "clearButton") {
                   e.stopPropagation();
                 } else {
-                  console.log("here");
                   setFilterActive(true);
                   setSelected(item.label);
                   handleFilter(item.label);
