@@ -46,7 +46,7 @@ Project is created with:
 
 A simple 3 page design that consists of a landing page, search results, and detailed page. The UI is kept clean with a simple color scheme. Number of results are displayed and adjusted based on sort and filtering. The **responsive** template supports two viewports:
 
-- Desktop: Side Filter for Languages and Dropdow for Sort
+- Desktop: Side Filter for Languages and Dropdown for Sort
 - Mobile/Tablet: Dropdowns for Languages and Sort
 
 ## Components
