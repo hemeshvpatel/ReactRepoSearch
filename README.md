@@ -80,4 +80,4 @@ A simple 3 page design that consistents of a landing page, search results, and d
 
 ## [License](https://github.com/hemeshvpatel/ReactRepoSearch/blob/dev/LICENSE)
 
-MIT @ ![Hemesh Patel](https://github.com/hemeshvpatel)
+MIT © [Hemesh Patel](https://github.com/hemeshvpatel)
