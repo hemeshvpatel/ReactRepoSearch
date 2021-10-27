@@ -27,6 +27,12 @@ $ npm install
 $ npm start
 ```
 
+To run tests:
+
+```
+$ npm test
+```
+
 ## Technologies
 
 Project is created with:
@@ -36,7 +42,7 @@ Project is created with:
 
 ## Design
 
-A simple 3 page design that consistents of a landing page, search results, and detailed page. The UI is kept clean with simple color scheme. The responsive design as resized smaller, removed the side filter for languages and turns it into a dropdown for mobile/tablets. Number of results are always displayed and adjusted based on sort/filtering.
+A simple 3 page design that consists of a landing page, search results, and detailed page. The UI is kept clean with simple color scheme. The responsive design as resized smaller, removed the side filter for languages and turns it into a dropdown for mobile/tablets. Number of results are always displayed and adjusted based on sort/filtering.
 
 ## Components
 
