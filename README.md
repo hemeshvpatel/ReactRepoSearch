@@ -27,7 +27,9 @@ $ npm install
 $ npm start
 ```
 
-To run tests:
+## Tests
+
+To perform jest tests, run locally using npm:
 
 ```
 $ npm test
@@ -42,7 +44,10 @@ Project is created with:
 
 ## Design
 
-A simple 3 page design that consists of a landing page, search results, and detailed page. The UI is kept clean with simple color scheme. The responsive design as resized smaller, removed the side filter for languages and turns it into a dropdown for mobile/tablets. Number of results are always displayed and adjusted based on sort/filtering.
+A simple 3 page design that consists of a landing page, search results, and detailed page. The UI is kept clean with a simple color scheme. Number of results are displayed and adjusted based on sort and filtering. The **responsive** template supports two viewports:
+
+- Desktop: Side Filter for Languages and Dropdow for Sort
+- Mobile/Tablet: Dropdowns for Languages and Sort
 
 ## Components
 
