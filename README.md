@@ -71,9 +71,9 @@ A simple 3 page design that consistents of a landing page, search results, and d
     <th>Mobile</th>
     </tr>
    <tr>
-    <td><img src="public/MobileMain.png" alt="3" width = 360px height = 640px></td>
-    <td><img src="public/MobileResults.png" alt="4" width = 360px height = 640px>
-    <td><img src="public/MobileDetails.png" alt="5" width = 360px height = 640px>
+    <td><img src="public/MobileMain.png" alt="3"></td>
+    <td><img src="public/MobileResults.png" alt="4">
+    <td><img src="public/MobileDetails.png" alt="5">
   </td>
   </tr>
 </table>
