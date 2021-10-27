@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import { DivFlexCenter } from "../globals/styles";
 import { BiArrowBack } from "react-icons/bi";
 import {
   GoStar as StarIcon,
@@ -96,11 +97,7 @@ const DetailLink = styled.a`
   }
 `;
 
-const Buttons = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+const Buttons = styled(DivFlexCenter)``;
 
 const BackButton = styled.div`
   ${({ theme }) => css`

@@ -56,7 +56,7 @@ const ClearButton = styled.div`
   `}
 `;
 
-export default function Filters({ data, handleFilter }) {
+export default function Filters({ data, handleFilter, setFilterActive }) {
   const [sortedLangs, setSortedLangs] = useState([]);
   const [selected, setSelected] = useState(null);
 
@@ -79,6 +79,8 @@ export default function Filters({ data, handleFilter }) {
                 if (e.target.name === "clearButton") {
                   e.stopPropagation();
                 } else {
+                  console.log("here");
+                  setFilterActive(true);
                   setSelected(item.label);
                   handleFilter(item.label);
                 }
@@ -92,6 +94,7 @@ export default function Filters({ data, handleFilter }) {
                     name="clearButton"
                     onClick={(e) => {
                       e.stopPropagation();
+                      setFilterActive(false);
                       setSelected(null);
                       handleFilter("clear");
                     }}

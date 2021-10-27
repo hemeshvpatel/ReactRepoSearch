@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { withRouter, Link } from "react-router-dom";
+import { DivFlexCenter } from "../globals/styles";
 
 const Container = styled.div`
   ${({ theme }) => css`
@@ -9,53 +10,43 @@ const Container = styled.div`
   `}
 `;
 
-const Wrapper = styled.div`
-  display: flex;
+const Wrapper = styled(DivFlexCenter)`
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   gap: 1rem;
   padding: 1rem;
   height: 100vh;
 `;
 
-const Title = styled.div`
+const Title = styled(DivFlexCenter)`
   ${({ theme }) => css`
     font-size: clamp(0.5rem, 50% + 1rem, 1.25rem);
-    min-height: 2rem;
-    align-items: center;
-    justify-content: center;
-    align-self: center;
-    text-align: center;
 
-    @media screen and (min-width: 800px) {
+    @media screen and (min-width: ${theme.mediaQueryLarge}) {
       font-size: clamp(2rem, 50% + 1rem, 5rem);
     }
   `}
 `;
 
 const Gif = styled.img`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: 50%;
   height: auto;
 `;
 
 const StyledLink = styled(Link)`
   ${({ theme }) => css`
-    text-decoration: none;
+    width: 10rem;
+    border: 2px solid ${theme.colors.secondary};
+    border-radius: 10px;
+    padding: 0.25rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.5rem;
     color: ${theme.colors.secondary};
-    border: 3px solid;
-    border-radius: 10px;
-    padding: 0.25rem;
+    text-decoration: none;
 
     &:hover {
-      color: red;
+      background-color: ${theme.colors.tertiary};
     }
   `}
 `;

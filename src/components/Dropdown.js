@@ -4,13 +4,14 @@ import styled, { css } from "styled-components";
 
 const Container = styled.div`
   ${({ theme }) => css`
-    @media screen and (min-width: 800px) {
+    //Only show language dropdown when screen size is below mediaQueryLarge (800px)
+    @media screen and (min-width: ${theme.mediaQueryLarge}) {
       display: ${(props) => (props?.label === "Languages" ? "none" : 0)};
     }
   `}
 `;
 
-const DropdownList = styled.select`
+const DropdownSelect = styled.select`
   ${({ theme }) => css`
     border-radius: 10px;
     border: 2px solid ${theme.colors.secondary};
@@ -20,15 +21,26 @@ const DropdownList = styled.select`
   `}
 `;
 
-const Label = styled.label``;
-const Option = styled.option``;
+const DropdownLabel = styled.label`
+  font-weight: 900;
+`;
 
-function Dropdown({ onChange, selected, setSelected, options, label }) {
+const DropdownOption = styled.option``;
+
+function Dropdown({
+  onChange,
+  selected,
+  setSelected,
+  options,
+  label,
+  disabled,
+}) {
   const handleSelect = (e) => {
     let currentSelection = e.currentTarget.value;
     setSelected(currentSelection);
-    let dObject = options.filter((o) => o.label === currentSelection)[0];
     if (label === "Sort") {
+      //Sort needs sort and order params for Github query
+      let dObject = options.filter((o) => o.label === currentSelection)[0];
       onChange({
         sort: dObject.sort,
         order: dObject.order,
@@ -42,14 +54,18 @@ function Dropdown({ onChange, selected, setSelected, options, label }) {
   }
   return (
     <Container label={label}>
-      <Label>{`${label}: `}</Label>
-      <DropdownList value={selected} onChange={handleSelect}>
+      <DropdownLabel>{`${label}: `}</DropdownLabel>
+      <DropdownSelect
+        value={selected}
+        onChange={handleSelect}
+        disabled={disabled || false}
+      >
         {options.map((d) => (
-          <Option key={d.label} value={d.label}>
+          <DropdownOption key={d.label} value={d.label}>
             {d.label}
-          </Option>
+          </DropdownOption>
         ))}
-      </DropdownList>
+      </DropdownSelect>
     </Container>
   );
 }

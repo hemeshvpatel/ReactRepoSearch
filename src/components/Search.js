@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled, { css } from "styled-components";
 import SearchBar from "./SearchBar";
 import Filters from "./Filters";
@@ -12,6 +12,7 @@ import {
 } from "react-icons/go";
 import Dropdown from "./Dropdown";
 import { sortLanguages } from "../globals/utils";
+import { DivFlexCenter } from "../globals/styles";
 
 const Container = styled.div`
   display: flex;
@@ -82,10 +83,7 @@ const List = styled.div`
   }
 `;
 
-const Loading = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const Loading = styled(DivFlexCenter)`
   height: 50vh;
   top: 25%;
   left: 50%;
@@ -102,10 +100,7 @@ const Dropdowns = styled.div`
   }
 `;
 
-const Pagination = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const Pagination = styled(DivFlexCenter)`
   gap: 2rem;
   padding: 1rem;
   font-size: 0.8rem;
@@ -119,6 +114,7 @@ function Search() {
   const [selectedSort, setSelectedSort] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("");
   const [page, setPage] = useState(1);
+  const [filterActive, setFilterActive] = useState(false);
 
   //Github Sort Options
   const sortOptions = [
@@ -132,39 +128,42 @@ function Search() {
   //get params from url
   let { q } = useParams();
 
-  const fetchData = ({ input, sort, order, perPage, pg }) => {
-    setLoading(true);
+  const fetchData = useCallback(
+    ({ input, sort, order, perPage, pg }) => {
+      setLoading(true);
 
-    //Query Parameters - Reference: https://docs.github.com/en/rest/reference/repos
-    const queryTerm = `q=` + encodeURIComponent(input || q);
-    const querySort = `${sort ? `&sort=${sort}` : ""}`;
-    const queryOrder = `${order ? `&order=${order}` : ""}`;
-    const queryPerPage = `&per_page=${perPage || 30}`;
-    const queryPage = `&page=${page || 1}`;
-    const queryString =
-      queryTerm + querySort + queryOrder + queryPerPage + queryPage;
+      //Query Parameters - Reference: https://docs.github.com/en/rest/reference/repos
+      const queryTerm = `q=` + encodeURIComponent(input || q);
+      const querySort = `${sort ? `&sort=${sort}` : ""}`;
+      const queryOrder = `${order ? `&order=${order}` : ""}`;
+      const queryPerPage = `&per_page=${perPage || 30}`;
+      const queryPage = `&page=${page || 1}`;
+      const queryString =
+        queryTerm + querySort + queryOrder + queryPerPage + queryPage;
 
-    //console.log("Github API Search Query: ", queryString);
-    let url = `https://api.github.com/search/repositories?${queryString}`;
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        let sortedLanguages = sortLanguages(data);
-        //add any option as default for dropdown
-        sortedLanguages.unshift({ label: "Any" });
-        setData({
-          totalCount: data.total_count,
-          items: data.items,
-          languages: sortedLanguages,
+      //console.log("Github API Search Query: ", queryString);
+      let url = `https://api.github.com/search/repositories?${queryString}`;
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          let sortedLanguages = sortLanguages(data);
+          //add any option as default for dropdown
+          sortedLanguages.unshift({ label: "Any" });
+          setData({
+            totalCount: data.total_count,
+            items: data.items,
+            languages: sortedLanguages,
+          });
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error(error);
+          setLoading(false);
+          setError(true);
         });
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
-        setError(true);
-      });
-  };
+    },
+    [page, q]
+  );
 
   const handleSubmit = (input) => {
     setFilteredResults(null);
@@ -173,9 +172,12 @@ function Search() {
   };
 
   const handleFilter = (filter) => {
+    //disables sort dropdown when filter is active (sort requires api call and will not align with filtering options)
     if (filter === "clear" || filter === "Any") {
+      setFilterActive(false);
       setFilteredResults(data);
     } else {
+      setFilterActive(true);
       let filteredResults = data?.items?.filter(
         (data) => data.language === filter
       );
@@ -188,17 +190,20 @@ function Search() {
 
   const handlePagination = (direction) => {
     let offset = page * 31;
+    let results = filteredResults
+      ? filteredResults?.totalCount
+      : data?.totalCount || 0;
     if (direction === "prev" && page >= 2) {
       setPage(page - 1);
     }
-    if (direction === "next" && page > 0 && offset < data?.totalCount) {
+    if (direction === "next" && page > 0 && offset < results) {
       setPage(page + 1);
     }
   };
 
   useEffect(() => {
     fetchData({ input: q });
-  }, [page]);
+  }, [q, page, fetchData]);
 
   return (
     <Container id="Search">
@@ -209,13 +214,18 @@ function Search() {
         <SearchBar placeholder="Search..." onSubmit={handleSubmit} value={q} />
       </Header>
       <ResultsWrapper>
-        <Filters data={data} handleFilter={handleFilter} />
+        <Filters
+          data={data}
+          handleFilter={handleFilter}
+          setFilterActive={setFilterActive}
+        />
         <List>
           <Dropdowns>
             <Dropdown
               onChange={handleFilter}
               selected={selectedFilter}
               setSelected={setSelectedFilter}
+              setFilterActive={setFilterActive}
               options={data ? data.languages : null}
               label={"Languages"}
             />
@@ -224,6 +234,7 @@ function Search() {
               selected={selectedSort}
               setSelected={setSelectedSort}
               options={sortOptions}
+              disabled={filterActive}
               label={"Sort"}
             />
           </Dropdowns>
